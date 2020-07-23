@@ -47,7 +47,7 @@ define ssh::server::host_key (
 ) {
 
   # Ensure the ssh::server class is included in the manifest
-  include ::ssh::server
+  include ssh::server
 
   if $public_key_source == '' and $public_key_content == '' and $ensure == 'present' {
     fail('You must provide either public_key_source or public_key_content parameter')
@@ -89,7 +89,7 @@ define ssh::server::host_key (
       owner   => $::ssh::params::host_key_owner,
       group   => $::ssh::params::host_key_group,
       mode    => $::ssh::params::host_key_mode,
-      path    => "${::ssh::params::ssh_cfg_dir}/${name}.pub",
+      path    => "${ssh::params::sshd_dir}/${name}.pub",
       source  => $manage_pub_key_source,
       content => $manage_pub_key_content,
       notify  => Class['ssh::server::service'],
@@ -100,7 +100,7 @@ define ssh::server::host_key (
       owner     => $::ssh::params::host_key_owner,
       group     => $::ssh::params::host_priv_key_group,
       mode      => $::ssh::params::host_priv_key_mode,
-      path      => "${::ssh::params::ssh_cfg_dir}/${name}",
+      path      => "${ssh::params::sshd_dir}/${name}",
       source    => $manage_priv_key_source,
       content   => $manage_priv_key_content,
       show_diff => false,
@@ -112,7 +112,7 @@ define ssh::server::host_key (
       owner  => $::ssh::params::host_key_owner,
       group  => $::ssh::params::host_key_group,
       mode   => $::ssh::params::host_key_mode,
-      path   => "${::ssh::params::ssh_cfg_dir}/${name}.pub",
+      path   => "${ssh::params::sshd_dir}/${name}.pub",
       notify => Class['ssh::server::service'],
     }
 
@@ -121,7 +121,7 @@ define ssh::server::host_key (
       owner     => $::ssh::params::host_key_owner,
       group     => $::ssh::params::host_priv_key_group,
       mode      => $::ssh::params::host_priv_key_mode,
-      path      => "${::ssh::params::ssh_cfg_dir}/${name}",
+      path      => "${ssh::params::sshd_dir}/${name}",
       show_diff => false,
       notify    => Class['ssh::server::service'],
     }
@@ -134,7 +134,7 @@ define ssh::server::host_key (
         owner   => $::ssh::params::host_key_owner,
         group   => $::ssh::params::host_key_group,
         mode    => $::ssh::params::host_key_mode,
-        path    => "${::ssh::params::ssh_cfg_dir}/${name}-cert.pub",
+        path    => "${ssh::params::sshd_dir}/${name}-cert.pub",
         source  => $manage_cert_source,
         content => $manage_cert_content,
         notify  => Class['ssh::server::service'],
@@ -145,7 +145,7 @@ define ssh::server::host_key (
         owner  => $::ssh::params::host_key_owner,
         group  => $::ssh::params::host_key_group,
         mode   => $::ssh::params::host_key_mode,
-        path   => "${::ssh::params::ssh_cfg_dir}/${name}-cert.pub",
+        path   => "${ssh::params::sshd_dir}/${name}-cert.pub",
         notify => Class['ssh::server::service'],
       }
     }
