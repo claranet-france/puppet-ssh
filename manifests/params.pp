@@ -136,12 +136,6 @@ class ssh::params {
       $package_uninstall_options = ['-params','""/SSHServerFeature""']
       $package_provider = 'chocolatey'
       $home_dir_path = 'C:/Users'
-      if $::architecture == 'x64' {
-        $sshd_exe_dir = 'C:/Program Files/OpenSSH-Win64'
-      }
-      else {
-        $sshd_exe_dir = 'C:/Program Files/OpenSSH-Win32'
-      }
       $sshd_path = "${sshd_exe_dir}/sshd.exe"
       $ssh_cfg_dir = 'C:/ProgramData/ssh'
       $sshd_config = "${ssh_cfg_dir}/sshd_config"
@@ -149,16 +143,20 @@ class ssh::params {
       $ssh_known_hosts = "${ssh_cfg_dir}/ssh_known_hosts"
       $service_name = 'sshd'
       $sftp_server_path = 'sftp-server.exe'
-      $cfg_file_owner = 'Administrators'
-      $cfg_file_group = 'Users'
-      $cfg_file_mode = '0755'
-      $cfg_priv_file_mode = '0750'
-      $host_key_owner = 'Administrators'
+      $cfg_file_owner = 'S-1-5-18'  # Local System SID
+      $cfg_file_group = 'S-1-5-32-544' # Administrators group SID
+      $cfg_file_mode = '0775'
+      $cfg_priv_file_mode = '0770'
+      $host_key_owner = 'S-1-5-18' # Administrators group SID
       $host_key_group = 'NT SERVICE\SSHD'
-      $host_key_mode = '0755'
+      $host_key_mode = '0750'
       $host_priv_key_group = 'NT SERVICE\SSHD'
       $host_priv_key_mode = '0750'
-
+      if $::architecture == 'x64' {
+        $sshd_exe_dir = 'C:/Program Files/OpenSSH-Win64'
+      } else {
+        $sshd_exe_dir = 'C:/Program Files/OpenSSH-Win32'
+      }
     }
     'ArchLinux': {
       $server_package_name = 'openssh'
